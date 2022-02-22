@@ -77,7 +77,7 @@ class AioZipStream(ZipBase):
 
     async def stream(self):
         # stream files
-        async for source in self._source_of_files():
+        async for source in self._source_of_files:
             file_struct = self._create_file_struct(source)
             # file offset in archive
             file_struct['offset'] = self._offset_get()
