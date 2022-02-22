@@ -6,10 +6,11 @@
 import os
 import time
 import zlib
+from collections import async_generator
+
 from . import consts
 
-
-__all__ = ("ZipStream", )
+__all__ = ("ZipStream",)
 
 
 class Processor:
@@ -54,7 +55,7 @@ class Processor:
 
 class ZipBase:
 
-    def __init__(self, files=[], chunksize=1024):
+    def __init__(self, files: async_generator, chunksize=1024):
         """
         files - list of files, or generator returning files
                 each file entry should be represented as dict with
@@ -93,9 +94,9 @@ class ZipBase:
         # date and time of file
         dt = time.localtime()
         dosdate = ((dt[0] - 1980) << 9 | dt[1] << 5 | dt[2]) \
-            & 0xffff
+                  & 0xffff
         dostime = (dt[3] << 11 | dt[4] << 5 | (dt[5] // 2)) \
-            & 0xffff
+                  & 0xffff
 
         # check zip32 limit
         # stats = os.stat(data['file'])

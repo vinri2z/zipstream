@@ -4,14 +4,16 @@
 # https://pkware.cachefly.net/webdocs/casestudies/APPNOTE.TXT
 #
 import asyncio
-from .zipstream import ZipBase, Processor
 from concurrent import futures
+
+from .zipstream import ZipBase, Processor
+
 try:
     import aiofiles
+
     aio_available = True
 except ImportError:
     aio_available = False
-
 
 __all__ = ("AioZipStream",)
 
@@ -75,7 +77,7 @@ class AioZipStream(ZipBase):
 
     async def stream(self):
         # stream files
-        for idx, source in enumerate(self._source_of_files):
+        async for source in self._source_of_files():
             file_struct = self._create_file_struct(source)
             # file offset in archive
             file_struct['offset'] = self._offset_get()
